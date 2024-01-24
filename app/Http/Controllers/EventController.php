@@ -139,8 +139,6 @@ class EventController extends Controller
      */
     public function list(Event $event): View
     {
-        SEOMeta::setTitle('Events', true);
-
         $per_page = 5;
         $events = Event::where('status', 1)->latest()->paginate($per_page);
 
@@ -162,16 +160,6 @@ class EventController extends Controller
         }
 
         if ($event) {
-
-            $title = isset($event->seo['meta_title']) && $event->seo['meta_title'] != '' ? $event->seo['meta_title'] : $event->title;
-            $site_name = app(\App\Settings\GeneralSettings::class)->site_name;
-
-            $image_url = url($event->thumb ? '/uploads/events/' . $event->uuid . '/thumb/' . $event->thumb : '');
-            $image_path = $event->thumb ? public_path() . '/uploads/events/' . $event->uuid . '/thumb/' . $event->thumb : '';
-            $image_url = checkThumb($image_path, $image_url);
-
-            $url = route('events.get_event', $event->slug);
-
             return view('frontend.event_single', compact('event', 'registration'));
         } else {
             return abort(404);
