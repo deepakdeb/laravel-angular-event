@@ -92,7 +92,7 @@ class EventController extends Controller
                 'registration_end_date' => 'required',
                 'status' => 'required',
             ]);
-        }else{
+        } else {
             request()->validate([
                 'title' => 'required|string|max:255',
             ]);
@@ -137,12 +137,10 @@ class EventController extends Controller
      *
      * @param  \App\Models\Event  $event
      */
-    public function list(Event $event): View
+    public function list(Event $event)
     {
-        $per_page = 5;
-        $events = Event::where('status', 1)->latest()->paginate($per_page);
-
-        return view('frontend.event_list', compact('events'))->with('i', (request()->input('event', 1) - 1) * $per_page);
+        $events = Event::latest()->get()->toArray();
+        return response()->json($events);
     } //end function list
 
     /**

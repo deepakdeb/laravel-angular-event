@@ -26,7 +26,7 @@ Auth::routes();
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     Route::post('/events/{id}', [EventController::class, 'storeOrUpdate'])->name('events.storeOrUpdate');
-    
+
     // resource route Start
     Route::resource('events', EventController::class);
     // resource route End
