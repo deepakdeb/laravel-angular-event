@@ -2,7 +2,7 @@
 
 ## Installation
 
-Clone this git repo and run these commands
+Clone this git repo, copy env from env.example and run these commands
 
 ```
 composer install
