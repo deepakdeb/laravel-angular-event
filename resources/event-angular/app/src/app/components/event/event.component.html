@@ -1,15 +1,42 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>Email</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let event of events">
-      <td>{{ event.id }}</td>
-      <td>{{ event.title }}</td>
-    </tr>
-  </tbody>
-</table>
+<section class="wrapper bg-soft-primary">
+    <div class="container py-4 text-center">
+        <div class="row">
+            <div class="col-md-9 col-lg-7 col-xl-5 mx-auto">
+                <h1 class="display-1 mb-3">Events</h1>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /section -->
+
+<section class="wrapper bg-light">
+    <div class="container py-4">
+        <div class="row gx-md-8 gy-10 gy-md-13 isotope">
+            <article class="col-12 col-md-3 pb-4" *ngFor="let event of events">
+                <div class="card" routerLink="event/{{ event.slug }}">
+                    <img src="{{ upload_url + 'events/' + event.uuid + '/' + event.image }}" *ngIf="event.image">
+                    <div class="card-body">
+                        <div class="post-header">
+                            <div class="post-title h3 mt-1 mb-3 text-center">
+                                <a class="link-dark" routerLink="event/{{ event.slug }}">{{ event.title }}</a>
+                            </div>
+                            <div class="post-title mt-1 mb-3 text-center">
+                                <span>{{event.start_date}}</span> -
+                                <span>{{event.end_date}}</span>
+                            </div>
+                            <div class="post-title mt-1 mb-3 text-center">{{event.venue}}</div>
+                        </div>
+                        <!-- /.post-header -->
+                    </div>
+                    <!--/.card-body -->
+                </div>
+                <!-- /.card -->
+            </article>
+            <!-- /.post -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /section -->

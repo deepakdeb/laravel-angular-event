@@ -5,7 +5,7 @@
     <div class="row g-2 align-items-center my-3">
         @auth
         <a href="{{ route('events.index') }}"
-            class="">Dashboard Event List
+            class="">Event List
         </a>
         
         @endauth

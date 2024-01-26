@@ -15,9 +15,6 @@
             <a href="{{ route('events.index') }}" class="btn btn-secondary d-inline-block">
                 Back
             </a>
-            <button class="btn btn-primary d-inline-block outerSubmitBtn">
-                Submit
-            </button>
         </div>
     </div>
 
@@ -124,15 +121,25 @@
                                 </option>
                                 <option value="1" {{ old('status', isset($event->status) ? $event->status : '') == 1 ?
                                     'selected' : '' }}>
-                                    Enacled
+                                    Enabled
                                 </option>
                             </select>
                         </div>
                     </div>
 
-                </div>
+                    <div class="col-12 my-2">
+                        <label class="form-label">Image:</label>
+                        <input id="image" type="file" name="image" class="form-control" placeholder="Image" />
+                    </div>
 
-                <div class="row">
+                    <div class="col-12 my-2">
+                        <div class="form-group">
+                            <label class="form-label" for="form-venue">Venue:</label>
+                            <input id="form-venue" type="text" name="venue" class="form-control" placeholder="Venue"
+                                value="{{ old('venue', isset($event->venue) ? $event->venue : '') }}" />
+                        </div>
+                    </div>
+
                     <div class="col-12 my-2 text-center">
                         <button type="submit" class="btn btn-primary editEventBtn">Submit</button>
                     </div>
@@ -153,57 +160,78 @@
     }, 'Must be greater than {0}.');
 
     jQuery(document).ready(function ($) {
-        $('button[data-bs-toggle="tab"]').on('click', function () {
-            localStorage.setItem("event-tab", $(this).attr('id'));
-            localStorage.setItem("event-tab-id", {{ $event-> id }});
-            });
+        let notifier = new AWN();
+        let eventEditForm = $("#eventEditForm");
 
-    let eventEditForm = $("#eventEditForm");
-
-    // validation rules
-    eventEditForm.validate({
-        errorClass: 'text-danger',
-        rules: {
-            title: {
-                required: true,
+        // validation rules
+        eventEditForm.validate({
+            errorClass: 'text-danger',
+            rules: {
+                title: {
+                    required: true,
+                },
+                status: {
+                    required: true,
+                },
+                registration_end_date: {
+                    greaterThan: "#form-registration_start_date"
+                }
             },
-            status: {
-                required: true,
-            },
-            registration_end_date: {
-                greaterThan: "#form-registration_start_date"
+            messages: {
+                title: {
+                    required: "Please enter a title",
+                },
+                status: {
+                    required: 'Please select a status',
+                },
+                registration_end_date: {
+                    greaterThan: 'End date cant be before start date',
+                }
             }
-        },
-        messages: {
-            title: {
-                required: "Please enter a title",
-            },
-            status: {
-                required: 'Please select a status',
-            },
-            registration_end_date: {
-                greaterThan: 'End date cant be before start date',
-            }
-        }
-    });
-
-    //on eventEditForm submit
-    eventEditForm.submit(function (event) {
-        //check validation
-        if (!eventEditForm.valid()) {
-            return false;
-        }
-    });
-
-    $('.outerSubmitBtn').on('click', function () {
-        $('.editEventBtn').trigger('click');
-    });
-
-    const event_tab = localStorage.getItem("event-tab");
-    const event_tab_id = localStorage.getItem("event-tab-id");
-    if (event_tab != '' && event_tab_id == {{ $event -> id }}) {
-        $('#' + event_tab).tab('show');
-    }
         });
+
+        //on eventEditForm submit
+        eventEditForm.submit(function (event) {
+            event.preventDefault();
+
+            //check validation
+            if (!eventEditForm.valid()) {
+                return false;
+            }
+
+            var action = '{{ route('events.storeOrUpdate', isset($event) ? $event->id : 0) }}';
+
+            let formData = new FormData($("#eventEditForm")[0]);
+            //console.log(formData);
+
+
+            $.ajax({
+                url: action,
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if(response.success){
+                        notifier.success(
+                            response.message, {
+                            durations: {
+                                success: 2000
+                            }
+                        });
+                    }else{
+                        notifier.alert(
+                            response.message, {
+                            durations: {
+                                success: 2000
+                            }
+                        });
+                    }
+
+                }
+            });
+        });
+
+    });
 </script>
 @endsection

@@ -15,7 +15,7 @@
         <!-- Event title actions -->
         <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
-                <a href="" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                <a href="{{ route('events.create') }}" class="btn btn-primary d-none d-sm-inline-block"
                     data-bs-target="#modal-report">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -26,7 +26,7 @@
                     </svg>
                     Create New
                 </a>
-                <a href="" class="btn btn-primary d-sm-none btn-icon" aria-label="Create New" data-bs-toggle="modal"
+                <a href="{{ route('events.create') }}" class="btn btn-primary d-sm-none btn-icon" aria-label="Create New"
                     data-bs-target="#modal-report">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"

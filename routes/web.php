@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\RegistrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Auth::routes();
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     Route::post('/events/{id}', [EventController::class, 'storeOrUpdate'])->name('events.storeOrUpdate');
+    Route::get('/registrations', [RegistrationController::class, 'index'])->name('registrations.index');
 
     // resource route Start
     Route::resource('events', EventController::class);

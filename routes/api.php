@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\RegistrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +15,8 @@ use App\Http\Controllers\EventController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::get('/events', [EventController::class, 'list'])->name('events.list');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/events', [EventController::class, 'list'])->name('events.list');
+Route::get('/event/{slug}', [EventController::class, 'get_event'])->name('event.get_event');
+
+Route::post('/register/{slug}', [RegistrationController::class, 'register'])->name('event.register');

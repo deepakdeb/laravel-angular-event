@@ -6,8 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Event;
-use App\Models\User;
-
+use Validator;
 
 
 class EventController extends Controller
@@ -79,23 +78,28 @@ class EventController extends Controller
      * @param  Request  $request
      * @param  \App\Models\Event  $event
      */
-    public function storeOrUpdate(Request $request, Event $event): RedirectResponse
+    public function storeOrUpdate(Request $request, Event $event)
     {
         $input = $request->all();
 
-        if ($request->id) {
-            request()->validate([
-                'title' => 'required|string|max:255',
-                'start_date' => 'required|date',
-                'end_date' => 'required|date',
-                'registration_start_date' => 'required',
-                'registration_end_date' => 'required',
-                'status' => 'required',
-            ]);
-        } else {
-            request()->validate([
-                'title' => 'required|string|max:255',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'registration_start_date' => 'required',
+            'registration_end_date' => 'required',
+            'status' => 'required',
+        ]);
+
+
+        if ($validator->fails()) {  
+            $errorMessages = $validator->errors()->all();
+            $errorMessageText = implode("\n", $errorMessages);
+            $data =[
+                'success' => false,
+                'message' => $errorMessageText
+            ];
+            return response()->json($data);
         }
 
         if ($request->id) {
@@ -105,13 +109,30 @@ class EventController extends Controller
             $success_msg = 'Event created successfully';
         }
 
-
         try {
             $storeOrUpdatedEvent = Event::updateOrCreate(['id' => $request->id], $input);
 
-            return redirect()->route('events.edit', $storeOrUpdatedEvent->id)->with('success', $success_msg);
+            if ($image = $request->file('image')) {
+                $destinationPath = 'uploads/events/'.$storeOrUpdatedEvent->uuid.'/';
+                $banner = date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $image->move($destinationPath, $banner);
+                $input['image'] = "$banner";
+    
+                Event::where('id', $storeOrUpdatedEvent->id)->update(['image' => $input['image']]);
+            }
+            $data =[
+                'success' => true,
+                'message' => $success_msg
+            ];
+            
+            return response()->json($data);
         } catch (\Exception $e) {
-            return redirect()->route('events.index')->with('error', $e->getMessage());
+            $data =[
+                'success' => true,
+                'message' => 'Server Error'
+            ];
+            
+            return response()->json($data);
         }
     } //end function update
 
@@ -139,7 +160,7 @@ class EventController extends Controller
      */
     public function list(Event $event)
     {
-        $events = Event::latest()->get()->toArray();
+        $events = Event::where('status' , 1)->latest()->get()->toArray();
         return response()->json($events);
     } //end function list
 
@@ -152,13 +173,15 @@ class EventController extends Controller
     public function get_event(Request $request)
     {
         try {
-            $event = Event::where('slug', $request->slug)->first();
+            $event = Event::where('slug', $request->slug)->first()->toArray();
         } catch (\Exception $e) {
             return abort(500);
         }
 
         if ($event) {
-            return view('frontend.event_single', compact('event', 'registration'));
+            $event['registration_enabled'] = now() > $event['registration_start_date'] && now() < $event['registration_end_date'] ? true :false;
+
+            return response()->json($event);
         } else {
             return abort(404);
         }
