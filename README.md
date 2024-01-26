@@ -19,14 +19,6 @@ run the artisan command.
 php artisan serve
 ```
 
-## Usage
-
-An Admin user is created upon running seeder commands with
-
-```
-Enail : info@codeboxr.com
-Password : 123456
-```
 
 # Angular
 
@@ -46,5 +38,5 @@ npm install
 Run Angular 
 
 ```
-npm install
+npm start
 ```
