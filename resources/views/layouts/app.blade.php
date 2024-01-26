@@ -36,7 +36,7 @@
                         <a class="nav-link active" aria-current="page" href="{{route('events.index')}}">Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('registrations.index')}}">Registration</a>
+                        <a class="nav-link" href="{{route('registrations.index')}}">Registrations</a>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>

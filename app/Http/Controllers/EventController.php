@@ -156,9 +156,8 @@ class EventController extends Controller
     /**
      * event list for front.
      *
-     * @param  \App\Models\Event  $event
      */
-    public function list(Event $event)
+    public function list()
     {
         $events = Event::where('status' , 1)->latest()->get()->toArray();
         return response()->json($events);
@@ -168,7 +167,6 @@ class EventController extends Controller
      * get specified event from slug.
      *
      * @param Request $request
-     * @return View
      */
     public function get_event(Request $request)
     {

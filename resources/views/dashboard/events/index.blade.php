@@ -4,7 +4,6 @@
 <div class="container-xl">
     <div class="row g-2 align-items-center my-3">
         <div class="col">
-            <!-- Event pre-title -->
             <div class="event-pretitle">
                 Event Management
             </div>
@@ -12,7 +11,7 @@
                 Events
             </h2>
         </div>
-        <!-- Event title actions -->
+
         <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
                 <a href="{{ route('events.create') }}" class="btn btn-primary d-none d-sm-inline-block"

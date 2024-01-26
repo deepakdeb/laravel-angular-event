@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <section class="wrapper image-wrapper bg-image bg-overlay bg-overlay-light-600"
-        data-image-src="{{ url('/assets/img/photos/bg18.png') }}">
+    <section class="wrapper image-wrapper bg-image bg-overlay bg-overlay-light-600">
         <div class="container pt-17 pb-20 pt-md-19 pb-md-21 text-center">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
@@ -12,13 +11,9 @@
                             <li class="breadcrumb-item active" aria-current="page">Sign Up</li>
                         </ol>
                     </nav>
-                    <!-- /nav -->
                 </div>
-                <!-- /column -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container -->
     </section>
     <!-- /section -->
 
@@ -98,7 +93,8 @@
                             <!-- /form -->
                             <p class="mb-0">Already have an account? <a href="{{ route('login') }}"
                                     class="hover">Sign
-                                    in</a></p>
+                                    in</a>
+                            </p>
                         </div>
                         <!--/.card-body -->
                     </div>

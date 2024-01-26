@@ -53,8 +53,6 @@ class RegistrationController extends Controller
 
                 $data['event_id'] = $event->id;
 
-                //dd($data);
-
                 $registration = Registration::create($data);
     
                 $data =[
